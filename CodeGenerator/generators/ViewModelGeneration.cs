@@ -14,31 +14,32 @@ namespace CodeGenerator.generators
             if(classNode != null)
             {
                 string modelClassName = classNode.Identifier.Text;
+                //Template
                 string viewModelClassName = $"{modelClassName}ViewModel";
                 string newImplementation =
                   $@"public class {viewModelClassName} : INotifyPropertyChanged
-{{
-public event PropertyChangedEventHandler PropertyChanged;
-// Raise a property change notification
-protected virtual void OnPropertyChanged(string propname)
-{{
-  PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propname));
-}}
-private ObservableCollection<{modelClassName}> _{modelClassName}s;
-public ObservableCollection<{modelClassName}> {modelClassName}s
-{{
-  get {{ return _{modelClassName}s; }}
-  set
-  {{
-    _{modelClassName}s = value;
-    OnPropertyChanged(nameof({modelClassName}s));
-  }}
-}}
-public {viewModelClassName}() {{
-// Implement your logic to load a collection of items
-}}
-}}
-";
+                  {{
+                  public event PropertyChangedEventHandler PropertyChanged;
+                  // Raise a property change notification
+                  protected virtual void OnPropertyChanged(string propname)
+                  {{
+                  PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propname));
+                  }}
+                   private ObservableCollection<{modelClassName}> _{modelClassName}s;
+                   public ObservableCollection<{modelClassName}> {modelClassName}s
+                  {{
+                  get {{ return _{modelClassName}s; }}
+                  set
+                  {{
+                  _{modelClassName}s = value;
+                  OnPropertyChanged(nameof({modelClassName}s));
+                  }}
+                  }}
+                  public {viewModelClassName}() {{
+                  // Implement your logic to load a collection of items
+                  }}
+                  }}
+                  ";
                 var newClassNode =
                     CSharpSyntaxTree.ParseText(newImplementation).GetRoot()
                     .DescendantNodes().OfType<ClassDeclarationSyntax>()
